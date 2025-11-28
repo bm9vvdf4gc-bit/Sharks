@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Notebook-style Schedule</title>
+
+<!-- Handwriting-like font -->
+<link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --paper-bg:#fffef8;
+    --line:#e6e6e6;
+    --ruled:#d7e9ff; /* faint blue ruled lines */
+    --margin:#f4c2c2;
+  }
+
+  html,body{height:100%;margin:0;font-family: 'Patrick Hand', -apple-system, system-ui, sans-serif;background:#f0f0f0;}
+  .frame{
+    max-width:900px;
+    margin:28px auto;
+    padding:36px 28px;
+    background: linear-gradient(0deg, var(--paper-bg) 0 0);
+    box-shadow: 0 10px 30px rgba(10,10,10,0.12);
+    border-radius:8px;
+    position:relative;
+    overflow:hidden;
+  }
+
+  /* ruled paper background */
+  .paper {
+    position:relative;
+    padding:36px 28px;
+    background:
+      linear-gradient(transparent 0 34px, var(--ruled) 34px),
+      linear-gradient(90deg, transparent 56px, rgba(255,120,120,0.03) 56px 58px, transparent 58px);
+    background-size: 100% 36px, 100% 36px;
+    min-height:820px;
+  }
+
+  /* spiral holes on left */
+  .spiral {
+    position:absolute;
+    left:6px;
+    top:40px;
+    bottom:40px;
+    width:64px;
+    pointer-events:none;
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+    align-items:center;
+  }
+  .hole {
+    width:22px;height:22px;border-radius:50%;
+    background: radial-gradient(circle at 35% 30%, rgba(0,0,0,0.25), rgba(0,0,0,0) 30%),
+                linear-gradient(180deg,#e8e8e8,#cfcfcf);
+    box-shadow: inset 0 -2px 3px rgba(0,0,0,0.15);
+  }
+
+  /* page title on the right like the photo */
+  .title {
+    position:absolute; right:18px; top:20px;
+    transform: rotate(90deg);
+    transform-origin: right top;
+    color:#5a5a5a;
+    font-size:18px;
+    letter-spacing:0.6px;
+    opacity:0.95;
+  }
+
+  /* The table */
+  table {
+    width:100%;
+    border-collapse:collapse;
+    margin-top:12px;
+    table-layout:fixed;
+    font-size:18px;
+    color:#222;
+  }
+  thead td {
+    padding:8px 6px;
+    font-weight:700;
+    border-bottom:2px solid rgba(0,0,0,0.06);
+  }
+  tbody td {
+    padding:10px 8px;
+    vertical-align:top;
+    border-bottom:1px dashed rgba(0,0,0,0.05);
+    background:transparent;
+  }
+
+  /* columns sizes */
+  .col-time{width:16%;}
+  .col-team{width:36%;}
+  .col-odds{width:14%;}
+  .col-score{width:14%;}
+  .col-notes{width:20%;}
+
+  /* editable look */
+  td[contenteditable]{
+    outline:none;
+    cursor:text;
+  }
+  td[contenteditable]:focus{
+    background: rgba(255,255,200,0.15);
+    box-shadow: inset 0 0 0 2px rgba(255,230,150,0.08);
+  }
+
+  /* mimic pen strokes */
+  .handwritten {
+    font-family: 'Patrick Hand', 'Segoe UI', Arial;
+    font-size:18px;
+    line-height:1.2;
+    color:#222;
+  }
+
+  /* small helper note */
+  .hint { margin-top:14px; color:#666; font-size:14px; }
+
+  /* responsive */
+  @media (max-width:600px){
+    .title {display:none;}
+    .paper{padding:18px;}
+    .frame{padding:12px;}
+    table {font-size:16px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="frame">
+  <div class="spiral" aria-hidden="true">
+    <!-- replicate multiple holes -->
+    <div class="hole"></div>
+    <div class="hole"></div>
+    <div class="hole"></div>
+    <div class="hole"></div>
+    <div class="hole"></div>
+    <div class="hole"></div>
+    <div class="hole"></div>
+    <div class="hole"></div>
+    <div class="hole"></div>
+  </div>
+
+  <div class="paper">
+
+    <div class="title">Martingale system with SJS</div>
+
+    <!-- Table that matches the notebook layout. All cells are editable -->
+    <table>
+      <thead>
+        <tr class="handwritten">
+          <td class="col-time">Date / Time</td>
+          <td class="col-team">Teams / Match</td>
+          <td class="col-odds">Odds</td>
+          <td class="col-score">Result</td>
+          <td class="col-notes">Notes</td>
+        </tr>
+      </thead>
+
+      <tbody class="handwritten">
+        <tr>
+          <td contenteditable="true">Nov 26 — 1:42</td>
+          <td contenteditable="true">Celebrim vs Smith</td>
+          <td contenteditable="true">-142</td>
+          <td contenteditable="true">W / L</td>
+          <td contenteditable="true">Points: 34</td>
+        </tr>
+
+        <tr>
+          <td contenteditable="true">Nov 26 — 1:80</td>
+          <td contenteditable="true">Elward vs Wemburg</td>
+          <td contenteditable="true">-180</td>
+          <td contenteditable="true">W / L</td>
+          <td contenteditable="true">Points: 21</td>
+        </tr>
+
+        <tr>
+          <td contenteditable="true">Nov 28 — 2:00</td>
+          <td contenteditable="true">Other vs Another</td>
+          <td contenteditable="true">-125</td>
+          <td contenteditable="true">W / L</td>
+          <td contenteditable="true">Notes...</td>
+        </tr>
+
+        <!-- Additional blank rows you can duplicate -->
+        <tr>
+          <td contenteditable="true">2:30 — 3:25</td>
+          <td contenteditable="true">Team A vs Team B</td>
+          <td contenteditable="true">-186</td>
+          <td contenteditable="true">0</td>
+          <td contenteditable="true"></td>
+        </tr>
+
+        <tr>
+          <td contenteditable="true">2:40 — 4:00</td>
+          <td contenteditable="true">Team C vs Team D</td>
+          <td contenteditable="true">-250</td>
+          <td contenteditable="true">-</td>
+          <td contenteditable="true"></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p class="hint">Click any cell to edit. Copy the exact handwriting from your photo into the cells. If you want, I can pre-fill these cells with my best transcription of your photo — say the word and I’ll paste it in.</p>
+
+  </div>
+</div>
+
+</body>
+</html>
